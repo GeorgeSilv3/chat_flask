@@ -9,6 +9,16 @@ def show_template():
     return render_template("index.html")
 
 
-if __name__ == "__main__":
-    socketio.run(app)
+@socketio.on("message")
+def handle_message(data):
+    print(f"client: {data}")
+    msg = input("Eu: ")
+    socketio.emit("message", f"server: {msg}")
 
+
+@socketio.on("connect")
+def handle_connect():
+    print("Hosts connected")
+
+if __name__ == "__main__":
+    socketio.run(app, debug=True)
